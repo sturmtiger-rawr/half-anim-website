@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Half-anim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+            33% { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%); }
+            66% { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 50%, #ddd6fe 100%); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(45deg, #667eea20, #764ba220);
+            color: #667eea;
+        }
+
+        main {
+            padding: 4rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(237,242,247,0.8) 100%);
+            border-radius: 30px;
+            padding: 5rem 2rem;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: #4a5568;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .social-section {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+        }
+
+        .social-section h2 {
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .cast-crew {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .section-card h3 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .credit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .credit-item:last-child {
+            border-bottom: none;
+        }
+
+        .credit-role {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .credit-name {
+            color: #718096;
+            font-style: italic;
+        }
+
+        .episodes-section {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(237,242,247,0.8) 100%);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .episodes-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+        }
+
+        .episode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .episode-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,250,252,0.6) 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .episode-card:hover {
+            transform: scale(1.02);
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+        }
+
+        .episode-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .episode-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .episode-status {
+            font-size: 0.9rem;
+            color: #718096;
+            font-style: italic;
+        }
+
+        footer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .footer-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #4a5568;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cast-crew {
+                grid-template-columns: 1fr;
+            }
+            
+            .credit-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Half-Anim</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#equipo">Equipo</a></li>
+                <li><a href="#redes">Redes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero" id="inicio">
+            <h1>Half-anim</h1>
+            <p class="subtitle">Genero: basado en videojuego</p>
+            <p class="description">serie animada sobre la historia de half life 1 y 2, CREDITOS A VALVE</p>
+        </section>
+
+        <section class="social-section" id="redes">
+            <h2>Síguenos</h2>
+            <div class="social-links">
+                <a href="https://www.youtube.com/@NachoGameplays2013" class="social-link">📺 YouTube</a>
+                <a href="https://www.tiktok.com/@nachogameplays" class="social-link">📱 TikTok</a>
+            </div>
+        </section>
+
+        <section class="cast-crew" id="equipo">
+            <div class="section-card">
+                <h3>Equipo Principal</h3>
+                <div class="credit-item">
+                    <span class="credit-role">Director/Creador</span>
+                    <span class="credit-name">nachogameplays</span>
+                </div>
+                <div class="credit-item">
+                    <span class="credit-role">Editor Principal</span>
+                    <span class="credit-name">nachogameplays</span>
+                </div>
+                <div class="credit-item">
+                    <span class="credit-role">Efectos Especiales</span>
+                    <span class="credit-name">nachogameplays</span>
+                </div>
+                <div class="credit-item">
+                    <span class="credit-role">Redes sociales</span>
+                    <span class="credit-name">nachogameplays</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="https://www.tiktok.com/@nachogameplays">Contacto</a>
+                </div>
+                <p>&copy; 2025 half-anim.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling para enlaces de navegación
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Animación hover para cards del equipo
+            const sectionCards = document.querySelectorAll('.section-card');
+            sectionCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                    this.style.boxShadow = '0 25px 50px rgba(0,0,0,0.2)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+                });
+            });
+
+            // Arreglo para enlaces de redes sociales - permitir navegación
+            const socialLinks = document.querySelectorAll('.social-link');
+            socialLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Solo aplicar animación visual, no prevenir navegación
+                    this.style.transform = 'translateY(-3px) scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-3px) scale(1.05)';
+                    }, 150);
+                    // No prevenir el evento, permitir que funcionen los enlaces
+                });
+            });
+
+            // Animación de aparición para elementos al hacer scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Aplicar animación inicial y observar elementos
+            const animatedElements = document.querySelectorAll('.hero, .social-section, .section-card, .episodes-section');
+            animatedElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(element);
+            });
+
+            // Efecto parallax suave para el hero
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                const rate = scrolled * -0.5;
+                
+                if (hero) {
+                    hero.style.transform = `translateY(${rate}px)`;
+                }
+            });
+
+            // Animación para episodios
+            const episodeCards = document.querySelectorAll('.episode-card');
+            episodeCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.02)';
+                    }, 100);
+                });
+            });
+
+            // Efecto typewriter para el título (opcional)
+            const heroTitle = document.querySelector('.hero h1');
+            if (heroTitle) {
+                const originalText = heroTitle.textContent;
+                heroTitle.textContent = '';
+                let i = 0;
+                
+                function typeWriter() {
+                    if (i < originalText.length) {
+                        heroTitle.textContent += originalText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 100);
+                    }
+                }
+                
+                // Ejecutar después de un breve delay
+                setTimeout(typeWriter, 1000);
+            }
+
+            // Cambio dinámico de colores en navigation hover
+            const navItems = document.querySelectorAll('.nav-links a');
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#a8edea', '#fed6e3'];
+            
+            navItems.forEach((item, index) => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.background = `linear-gradient(45deg, ${colors[index % colors.length]}20, ${colors[(index + 1) % colors.length]}20)`;
+                    this.style.color = colors[index % colors.length];
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.background = '';
+                    this.style.color = '#4a5568';
+                });
+            });
+        });
+
+        // Función para cambiar el gradiente del fondo manualmente
+        function changeBackgroundGradient() {
+            const gradients = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+                'linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%)',
+                'linear-gradient(135deg, #d299c2 0%, #fef9d7 50%, #ddd6fe 100%)',
+                'linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #667eea 100%)'
+            ];
+            
+            const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+            document.body.style.background = randomGradient;
+        }
+    </script>
+</body>
+</html>
